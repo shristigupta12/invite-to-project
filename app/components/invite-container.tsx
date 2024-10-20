@@ -1,7 +1,8 @@
 'use client'
 import { useState, useRef, useEffect } from 'react'
-import { IconUserPlus, IconX, IconInfoCircleFilled, IconWorld, IconChevronDown, IconChevronUp, IconCheck } from '@tabler/icons-react'
+import { IconUserPlus, IconX, IconInfoCircleFilled, IconWorld, IconChevronDown, IconChevronUp, IconCheck, IconLink } from '@tabler/icons-react'
 import Members from './members'
+import { MembersWithLink } from './members-with-link'
 
 type Member = {
     name: string;
@@ -15,12 +16,14 @@ export default function InviteContainer() {
     const [linkMemberDropdown, setLinkMemberDropdown] = useState(false)
     const [accessLevel, setAccessLevel] = useState<'view' | 'edit'>('view')
     const [inputSelected, setInputSelected] = useState(false)
-    const dropdownRef = useRef<HTMLDivElement>(null)
-    const inputRef = useRef<HTMLDivElement>(null)
     const [inputValue, setInputValue] = useState("")
     const [enterValidEmail, setEnterValidEmail] = useState(false)
     const [profileImageIndex, setProfileImageIndex] = useState(1)
     const [membersList, setMembersList] = useState<Member[]>([])
+    
+    const dropdownRef = useRef<HTMLDivElement>(null)
+    const inputRef = useRef<HTMLDivElement>(null)
+    const memberLinkRef = useRef<HTMLDivElement>(null)
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(event.target.value);
@@ -34,6 +37,9 @@ export default function InviteContainer() {
             }
             if (inputRef.current && !inputRef.current.contains(event?.target as Node)) {
                 setInputSelected(false)
+            }
+            if (memberLinkRef.current && !memberLinkRef.current.contains(event?.target as Node)) {
+                setLinkMemberDropdown(false)
             }
         }
         document.addEventListener("mousedown", handleClickOutside)
@@ -100,16 +106,20 @@ export default function InviteContainer() {
                                     onChange={handleInputChange}
                                     placeholder="Enter email address"
                                 />
-                                <div className='left-[238px] absolute text-neutral-700 font-semibold top-[10px]'>{`can ${accessLevel}`}</div>
-                                <IconWorld className='absolute right-24 top-[11px] text-neutral-400 w-5' />
+                                <div className='absolute flex gap-1 right-2 top-3 '>
+                                <IconWorld className='  text-neutral-400 w-5' />
+                                <div className=' text-neutral-700 font-semibold '>{`can ${accessLevel}`}</div>
+                                <div>
                                 <IconChevronDown 
-                                    className={`absolute ${canViewDropdown ? 'hidden' : 'block'} top-[11px] text-neutral-400 right-[10px] w-5 hover:cursor-pointer ${inputSelected ? "text-red-500" : ""}`} 
+                                    className={` ${canViewDropdown ? 'hidden' : 'block'} text-neutral-400 w-5 hover:cursor-pointer ${inputSelected ? "text-red-500" : ""}`} 
                                     onClick={() => setCanViewDropdown(!canViewDropdown)}
                                 />
                                 <IconChevronUp 
-                                    className={`absolute ${canViewDropdown ? 'block' : 'hidden'} top-[11px] text-neutral-400 right-[10px] w-5 hover:cursor-pointer ${inputSelected ? "text-red-500" : ""}`} 
+                                    className={` ${canViewDropdown ? 'block' : 'hidden'} text-neutral-400 w-5 hover:cursor-pointer ${inputSelected ? "text-red-500" : ""}`} 
                                     onClick={() => setCanViewDropdown(!canViewDropdown)}
                                 />
+                                </div>
+                                </div>
                             </div>
                             <div 
                                 ref={dropdownRef} 
@@ -159,7 +169,7 @@ export default function InviteContainer() {
             </div>
 
             <div>
-                <div className='text-lg font-semibold text-neutral-700 flex items-center gap-2'>
+                <div className=' relative text-lg font-semibold text-neutral-700 flex items-center gap-2'>
                     <div>Members with link</div>
                     <IconChevronDown 
                         className={`${linkMemberDropdown ? 'hidden' : 'block'} text-neutral-400 w-5 hover:cursor-pointer`} 
@@ -169,6 +179,34 @@ export default function InviteContainer() {
                         className={`${linkMemberDropdown ? 'block' : 'hidden'} text-neutral-400 w-5 hover:cursor-pointer`} 
                         onClick={() => setLinkMemberDropdown(!linkMemberDropdown)}
                     />
+                    <div className={`absolute z-50 bg-white border rounded-lg p-3 top-8 shadow min-w-56 flex-col gap-3 ${linkMemberDropdown?"flex":"hidden"}`} ref={memberLinkRef}>
+
+                        <div className='flex flex-col gap-1'>
+                            <div className='text-md font-semibold text-neutral-700'>Members</div>
+                            <div className='flex gap-2'>
+                                {membersList.length>0 && membersList.map((member, index) => (
+                                    <MembersWithLink 
+                                        key={`${member.email}-${index}`}
+                                        name={member.name}
+                                        profileUrl={member.profileUrl}
+                                        access={member.access}
+                                    />
+                                ))}
+                            </div>
+                            {membersList.length==0 && <div className='text-neutral-400 text-xs'>No members</div>}
+                        </div>
+
+                        <div className='flex flex-col gap-2'>
+                            <div className='text-md font-semibold text-neutral-700'>Share link</div>
+                            <div className='flex justify-between gap-4'>
+                                <div className='flex items-center justify-center gap-1 p-1 rounded-lg text-neutral-700 border bg-white text-sm border-neutral-200 shadow cursor-pointer hover:bg-neutral-100'>
+                                    <IconLink className='size-5' />
+                                    <div>Copy Link</div>
+                                </div>
+                                <div className='bg-neutral-200 text-neutral-600 py-1 px-3 rounded-lg cursor-pointer text-sm border border-neutral-300 hover:bg-neutral-300 font-bold'>Done</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div className='text-neutral-500'>
                     Members who have the link have access to this project.
