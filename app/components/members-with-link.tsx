@@ -1,6 +1,12 @@
 import Image from "next/image"
 
-export function MembersWithLink({name, profileUrl, access}:any){
+type MemberProps = {
+    name: string;
+    profileUrl: string;
+    access: 'view' | 'edit';
+}
+
+export function MembersWithLink({name, profileUrl, access}: MemberProps){
     return(
         <div className="flex flex-col items-center ">
             <div className='rounded-full overflow-hidden w-[25px] h-[25px]'>
