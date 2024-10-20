@@ -78,7 +78,7 @@ export default function InviteContainer() {
     }
 
     return (
-        <div className="mx-auto bg-white rounded-xl p-5 w-fit mt-44 border flex flex-col gap-6 shadow-lg">
+        <div className="mx-auto bg-white rounded-xl p-5 w-fit mt-44 border flex flex-col gap-6 shadow-lg mb-44">
             <div className="border-b-[2.5px] border-dashed pb-6 flex justify-between">
                 <div className='rounded-full border w-12 h-12 flex items-center justify-center shadow'>
                     <IconUserPlus className='text-neutral-500' />
@@ -100,7 +100,7 @@ export default function InviteContainer() {
                         <div className='w-full relative flex' ref={inputRef} onClick={() => { setInputSelected(true) }}>
                             <div className='relative flex w-full'>
                                 <input 
-                                    className={`border-2 w-full rounded-lg pl-3 pr-32 outline-none focus:ring-0 ${inputSelected ? "border-red-500" : ""}`} 
+                                    className={`border-2 w-full rounded-lg pl-3 pr-32 outline-none focus:ring-0 max-sm:placeholder:text-sm ${inputSelected ? "border-red-500" : ""}`} 
                                     type='email' 
                                     value={inputValue} 
                                     onChange={handleInputChange}
@@ -183,7 +183,7 @@ export default function InviteContainer() {
 
                         <div className='flex flex-col gap-1'>
                             <div className='text-md font-semibold text-neutral-700'>Members</div>
-                            <div className='flex gap-2'>
+                            <div className='flex gap-4'>
                                 {membersList.length>0 && membersList.map((member, index) => (
                                     <MembersWithLink 
                                         key={`${member.email}-${index}`}
@@ -203,7 +203,7 @@ export default function InviteContainer() {
                                     <IconLink className='size-5' />
                                     <div>Copy Link</div>
                                 </div>
-                                <div className='bg-neutral-200 text-neutral-600 py-1 px-3 rounded-lg cursor-pointer text-sm border border-neutral-300 hover:bg-neutral-300 font-bold'>Done</div>
+                                <div className={`bg-neutral-100 text-neutral-600 py-1 px-3 rounded-lg cursor-pointer text-sm border border-neutral-300 hover:bg-neutral-200 font-bold`} onClick={()=>{setLinkMemberDropdown(false)}}>Done</div>
                             </div>
                         </div>
                     </div>
