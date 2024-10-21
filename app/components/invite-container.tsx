@@ -77,15 +77,23 @@ export default function InviteContainer() {
         setEnterValidEmail(false);
     }
 
+    const updateMemberAccess = (email: string, newAccess: 'view' | 'edit') => {
+        setMembersList(prevMembers => 
+            prevMembers.map(member => 
+                member.email === email ? { ...member, access: newAccess } : member
+            )
+        );
+    }
+
     return (
-        <div className="mx-auto bg-white rounded-xl p-5 w-fit mt-44 border flex flex-col gap-6 shadow-lg mb-44">
+        <div className="mx-auto bg-white rounded-xl sm:p-5 py-5 px-3 w-fit mt-44 border flex flex-col gap-6 shadow-lg mb-60">
             <div className="border-b-[2.5px] border-dashed pb-6 flex justify-between">
                 <div className='rounded-full border w-12 h-12 flex items-center justify-center shadow'>
                     <IconUserPlus className='text-neutral-500' />
                 </div>
                 <div className='flex flex-col gap-1'>
-                    <div className='text-xl font-semibold text-neutral-700'>Invite to project</div>
-                    <div className='text-neutral-500'>Collaborate with members on this project.</div>
+                    <div className='sm:text-xl text-lg font-semibold text-neutral-700'>Invite to project</div>
+                    <div className='max-sm:text-sm text-neutral-500'>Collaborate with members on this project.</div>
                 </div>
                 <IconX className='text-neutral-500 w-4 hover:cursor-pointer' />
             </div>
@@ -93,22 +101,22 @@ export default function InviteContainer() {
             <div className="border-b-[2.5px] border-dashed pb-6 flex flex-col gap-5">
                 <div className='flex flex-col gap-1'>
                     <div className='flex items-center gap-1'>
-                        <div className='text-lg font-semibold text-neutral-700'>Invite Members</div>
+                        <div className='md:text-lg font-semibold text-neutral-700'>Invite Members</div>
                         <IconInfoCircleFilled className='text-neutral-300 text-sm size-5 hover:cursor-pointer' />
                     </div>
                     <div className="flex gap-3">
                         <div className='w-full relative flex' ref={inputRef} onClick={() => { setInputSelected(true) }}>
                             <div className='relative flex w-full'>
                                 <input 
-                                    className={`border-2 w-full rounded-lg pl-3 pr-32 outline-none focus:ring-0 max-sm:placeholder:text-sm ${inputSelected ? "border-red-500" : ""}`} 
+                                    className={`border-2 w-full rounded-lg pl-3 pr-32 outline-none focus:ring-0 max-sm:text-sm ${inputSelected ? "border-red-500" : ""}`} 
                                     type='email' 
                                     value={inputValue} 
                                     onChange={handleInputChange}
                                     placeholder="Enter email address"
                                 />
-                                <div className='absolute flex gap-1 right-2 top-3 '>
-                                <IconWorld className='  text-neutral-400 w-5' />
-                                <div className=' text-neutral-700 font-semibold '>{`can ${accessLevel}`}</div>
+                                <div className='absolute flex gap-1 right-2 top-3 items-center '>
+                                <IconWorld className='  text-neutral-400 sm:w-5 w-4' />
+                                <div className=' text-neutral-700 font-semibold max-sm:text-sm '>{`can ${accessLevel}`}</div>
                                 <div>
                                 <IconChevronDown 
                                     className={` ${canViewDropdown ? 'hidden' : 'block'} text-neutral-400 w-5 hover:cursor-pointer ${inputSelected ? "text-red-500" : ""}`} 
@@ -153,7 +161,7 @@ export default function InviteContainer() {
                     </div>
                 </div>
                 <div className='flex flex-col gap-1'>
-                    <div className='text-lg text-neutral-700 font-semibold'>Members with access</div>
+                    <div className='md:text-lg text-neutral-700 font-semibold'>Members with access</div>
                     <div>
                         {membersList.map((member, index) => (
                             <Members 
@@ -162,6 +170,7 @@ export default function InviteContainer() {
                                 profileUrl={member.profileUrl}
                                 email={member.email}
                                 access={member.access}
+                                setAccess={(newAccess) => updateMemberAccess(member.email, newAccess)}
                             />
                         ))}
                     </div>
@@ -169,8 +178,8 @@ export default function InviteContainer() {
             </div>
 
             <div>
-                <div className=' relative text-lg font-semibold text-neutral-700 flex items-center gap-2'>
-                    <div>Members with link</div>
+                <div className=' relative md:text-lg font-semibold text-neutral-700 flex items-center gap-2'>
+                    <div >Members with link</div>
                     <IconChevronDown 
                         className={`${linkMemberDropdown ? 'hidden' : 'block'} text-neutral-400 w-5 hover:cursor-pointer`} 
                         onClick={() => setLinkMemberDropdown(!linkMemberDropdown)}
@@ -179,9 +188,9 @@ export default function InviteContainer() {
                         className={`${linkMemberDropdown ? 'block' : 'hidden'} text-neutral-400 w-5 hover:cursor-pointer`} 
                         onClick={() => setLinkMemberDropdown(!linkMemberDropdown)}
                     />
-                    <div className={`absolute z-50 bg-white border rounded-lg p-3 top-8 shadow min-w-56 flex-col gap-3 ${linkMemberDropdown?"flex":"hidden"}`} ref={memberLinkRef}>
+                    <div className={`absolute z-50 bg-white border rounded-lg p-3 top-8 shadow min-w-56 flex-col gap-5 ${linkMemberDropdown?"flex":"hidden"}`} ref={memberLinkRef}>
 
-                        <div className='flex flex-col gap-1'>
+                        <div className='flex flex-col gap-2'>
                             <div className='text-md font-semibold text-neutral-700'>Members</div>
                             <div className='flex gap-4'>
                                 {membersList.length>0 && membersList.map((member, index) => (
@@ -199,16 +208,16 @@ export default function InviteContainer() {
                         <div className='flex flex-col gap-2'>
                             <div className='text-md font-semibold text-neutral-700'>Share link</div>
                             <div className='flex justify-between gap-4'>
-                                <div className='flex items-center justify-center gap-1 p-1 rounded-lg text-neutral-700 border bg-white text-sm border-neutral-200 shadow cursor-pointer hover:bg-neutral-100'>
+                                <div className='flex items-center justify-center gap-1 p-2 rounded-lg text-neutral-700 border bg-white text-sm border-neutral-200 shadow cursor-pointer hover:bg-neutral-100'>
                                     <IconLink className='size-5' />
                                     <div>Copy Link</div>
                                 </div>
-                                <div className={`bg-neutral-100 text-neutral-600 py-1 px-3 rounded-lg cursor-pointer text-sm border border-neutral-300 hover:bg-neutral-200 font-bold`} onClick={()=>{setLinkMemberDropdown(false)}}>Done</div>
+                                <div className={`bg-neutral-100 text-neutral-600 py-1 px-3 rounded-lg cursor-pointer text-sm border border-neutral-300 hover:bg-neutral-200 font-bold flex items-center`} onClick={()=>{setLinkMemberDropdown(false)}}>Done</div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className='text-neutral-500'>
+                <div className='text-neutral-500 max-sm:text-sm'>
                     Members who have the link have access to this project.
                 </div>
             </div>

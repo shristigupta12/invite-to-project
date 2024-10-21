@@ -1,4 +1,3 @@
-
 "use client"
 import React, { useState, useEffect, useRef } from 'react'
 import { IconWorld, IconChevronDown, IconChevronUp, IconCheck } from '@tabler/icons-react'
@@ -9,12 +8,13 @@ type MemberProps = {
     profileUrl: string;
     email: string;
     access: 'view' | 'edit';
+    setAccess: (newAccess: 'view' | 'edit') => void;
 }
 
-export default function Members({ name, profileUrl, email, access }: MemberProps) {
+export default function Members({ name, profileUrl, email, access, setAccess }: MemberProps) {
     const [canViewDropdown, setCanViewDropdown] = useState(false)
-    const [accessLevel, setAccessLevel] = useState<'view' | 'edit'>(access)
     const dropdownRef = useRef<HTMLDivElement>(null)
+    
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -48,12 +48,12 @@ export default function Members({ name, profileUrl, email, access }: MemberProps
             </div>
             <div className='flex gap-1 relative'>
                 <IconWorld className='text-neutral-400 w-5' />
-                <div className='text-neutral-500'>{`can ${accessLevel}`}</div>
+                <div className='text-neutral-500'>{`can ${access}`}</div>
                 <IconChevronDown 
                     className={`${canViewDropdown ? 'hidden' : 'block'} text-neutral-400 w-5 hover:cursor-pointer`} 
                     onClick={() => setCanViewDropdown(true)}
                 />
-                <IconChevronUp 
+<IconChevronUp 
                     className={`${canViewDropdown ? 'block' : 'hidden'} text-neutral-400 w-5 hover:cursor-pointer`} 
                     onClick={() => setCanViewDropdown(false)}
                 />
@@ -63,18 +63,18 @@ export default function Members({ name, profileUrl, email, access }: MemberProps
                     className={`absolute flex flex-col gap-1 top-full mt-1 right-0 border rounded-xl shadow p-1 z-50 bg-white ${canViewDropdown ? "flex" : "hidden"}`}
                 >
                     <div 
-                        className={`hover:cursor-pointer w-32 px-2 py-1 hover:bg-neutral-100 rounded-lg text-neutral-400 hover:text-neutral-600 font-semibold flex justify-between items-center ${accessLevel === "edit" ? "bg-neutral-100 text-neutral-600" : ""}`} 
-                        onClick={() => {setAccessLevel("edit"); setCanViewDropdown(false);}}
+                        className={`hover:cursor-pointer w-32 px-2 py-1 hover:bg-neutral-100 rounded-lg text-neutral-400 hover:text-neutral-600 font-semibold flex justify-between items-center ${access === "edit" ? "bg-neutral-100 text-neutral-600" : ""}`} 
+                        onClick={() => {setAccess("edit"); setCanViewDropdown(false);}}
                     >
                         <div>can edit</div> 
-                        <IconCheck className={`size-4 text-neutral-400 ${accessLevel === "edit" ? "block" : "hidden"}`} />
+                        <IconCheck className={`size-4 text-neutral-400 ${access === "edit" ? "block" : "hidden"}`} />
                     </div>
                     <div 
-                        className={`hover:cursor-pointer w-32 px-2 py-1 hover:bg-neutral-100 rounded-lg text-neutral-400 hover:text-neutral-600 font-semibold flex justify-between items-center ${accessLevel === "view" ? "bg-neutral-100 text-neutral-600" : ""}`} 
-                        onClick={() => {setAccessLevel("view"); setCanViewDropdown(false);}}
+                        className={`hover:cursor-pointer w-32 px-2 py-1 hover:bg-neutral-100 rounded-lg text-neutral-400 hover:text-neutral-600 font-semibold flex justify-between items-center ${access === "view" ? "bg-neutral-100 text-neutral-600" : ""}`} 
+                        onClick={() => {setAccess("view"); setCanViewDropdown(false);}}
                     >
                         <div>can view</div> 
-                        <IconCheck className={`size-4 text-neutral-400 ${accessLevel === "view" ? "block" : "hidden"}`} />
+                        <IconCheck className={`size-4 text-neutral-400 ${access === "view" ? "block" : "hidden"}`} />
                     </div>
                 </div>
             </div>
