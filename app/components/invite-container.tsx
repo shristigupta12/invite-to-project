@@ -115,15 +115,15 @@ export default function InviteContainer() {
                                     placeholder="Enter email address"
                                 />
                                 <div className='absolute flex gap-1 right-2 top-3 items-center '>
-                                <IconWorld className='  text-neutral-400 sm:w-5 w-4' />
-                                <div className=' text-neutral-700 font-semibold max-sm:text-sm '>{`can ${accessLevel}`}</div>
+                                <IconWorld className='  text-neutral-400 sm:w-5 w-4 -mt-[1px]' />
+                                <div className=' text-neutral-700 font-semibold max-sm:text-sm -mt-1'>{`can ${accessLevel}`}</div>
                                 <div>
                                 <IconChevronDown 
-                                    className={` ${canViewDropdown ? 'hidden' : 'block'} text-neutral-400 w-5 hover:cursor-pointer ${inputSelected ? "text-red-500" : ""}`} 
+                                    className={` ${canViewDropdown ? 'hidden' : 'block'} text-neutral-400 w-4 hover:cursor-pointer ${inputSelected ? "text-red-500" : ""}`} 
                                     onClick={() => setCanViewDropdown(!canViewDropdown)}
                                 />
                                 <IconChevronUp 
-                                    className={` ${canViewDropdown ? 'block' : 'hidden'} text-neutral-400 w-5 hover:cursor-pointer ${inputSelected ? "text-red-500" : ""}`} 
+                                    className={` ${canViewDropdown ? 'block' : 'hidden'} text-neutral-400 w-4 hover:cursor-pointer ${inputSelected ? "text-red-500" : ""}`} 
                                     onClick={() => setCanViewDropdown(!canViewDropdown)}
                                 />
                                 </div>
